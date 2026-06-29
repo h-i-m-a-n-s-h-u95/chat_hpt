@@ -1,143 +1,97 @@
-# 🤖chat_hpt (Next.js + Groq API)
+# chat_hpt
 
-A modern AI chatbot built with **Next.js** and powered by the **Groq API**.
-This project replicates a ChatGPT-like interface with fast responses and a clean UI.
+A chat application built with [Next.js](https://nextjs.org/) and [assistant-ui](https://www.assistant-ui.com/), powered by [Groq](https://groq.com/) for fast LLM inference.
 
----
+**Live demo:** [chat-hpt-seven.vercel.app](https://chat-hpt-seven.vercel.app/)
 
-## 🌐 Live Demo
+## Tech Stack
 
-👉 https://chat-hpt-seven.vercel.app/
+- **Framework:** Next.js 16 (App Router, Turbopack)
+- **Chat UI:** assistant-ui (`@assistant-ui/react`, `@assistant-ui/react-ai-sdk`)
+- **LLM Provider:** Groq (`@ai-sdk/groq`) running `llama-3.3-70b-versatile`
+- **AI SDK:** Vercel AI SDK v6
+- **Styling:** Tailwind CSS + shadcn/ui components
+- **Language:** TypeScript
+- **Hosting:** Vercel
 
----
+## Getting Started
 
-## ⚙️ Tech Stack
+### 1. Clone the repository
 
-* **Frontend:** Next.js (App Router)
-* **Styling:** Tailwind CSS (or your styling system)
-* **AI Backend:** Groq API (LLaMA / Mixtral models)
-* **Deployment:** Vercel
-
----
-
-## ✨ Features
-
-* 💬 ChatGPT-like UI
-* ⚡ Fast responses using Groq inference
-* 🧠 Context-based conversation
-* 📱 Responsive design
-* 🔄 Streaming responses (if implemented)
-* 🌙 Clean modern interface
-
----
-
-## 📁 Project Structure
-
-```
-app/
-  page.tsx
-  assistant.tsx
-
-components/
-  thread.tsx
-  chat-input.tsx
-  message.tsx
-
-lib/
-  groq.ts
+```bash
+git clone https://github.com/h-i-m-a-n-s-h-u95/chat_hpt.git
+cd chat_hpt
 ```
 
----
+### 2. Install dependencies
 
-## 🔑 Environment Variables
+```bash
+npm install
+```
 
-Create a `.env.local` file:
+### 3. Set up environment variables
+
+Copy the example file and fill in your own API key:
+
+```bash
+cp .env.example .env.local
+```
+
+Then open `.env.local` and add your [Groq API key](https://console.groq.com/keys):
 
 ```
 GROQ_API_KEY=your_groq_api_key_here
 ```
 
----
+### 4. Run the development server
 
-## ▶️ Getting Started
-
-Clone the repo:
-
-```
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
-```
-
-Install dependencies:
-
-```
-npm install
-```
-
-Run development server:
-
-```
+```bash
 npm run dev
 ```
 
----
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-## 🚀 Deployment
+## Available Scripts
 
-Deployed on **Vercel**:
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the local dev server (Turbopack) |
+| `npm run build` | Create a production build |
+| `npm run start` | Run the production build locally |
+| `npm run lint` | Lint the codebase |
+| `npm run lint:fix` | Lint and auto-fix issues |
+| `npm run format` | Check code formatting |
+| `npm run format:fix` | Auto-format the codebase |
+
+## Project Structure
 
 ```
-vercel
+app/
+  api/chat/route.ts       # API route that streams responses from the Groq model
+  assistant.tsx           # Main assistant/chat page composition
+  page.tsx                # App entry route
+components/
+  assistant-ui/           # Chat UI primitives (thread, composer, tool rendering, etc.)
+  ui/                     # Shared shadcn/ui components
+lib/
+  utils.ts                # Shared utility helpers
+hooks/
+  use-mobile.ts            # Responsive layout hook
 ```
 
-Or connect your GitHub repo directly to Vercel.
+## Deployment
 
----
+This project is deployed on [Vercel](https://vercel.com) at **[chat-hpt-seven.vercel.app](https://chat-hpt-seven.vercel.app/)**.
 
-## 🧠 How It Works
+To deploy your own copy:
 
-1. User enters a prompt
-2. Request is sent to Groq API
-3. Model generates response (LLaMA / Mixtral)
-4. UI updates in real-time
+1. Import the GitHub repository into Vercel.
+2. Add the required environment variable in the Vercel project settings (**Settings → Environment Variables**):
+   - `GROQ_API_KEY`
+3. Deploy — Vercel automatically detects the Next.js framework and runs the build.
+4. If you add or change an environment variable after the first deploy, trigger a redeploy — Vercel does not pick up env var changes on a running deployment automatically.
 
----
+## Notes
 
-## ⚠️ Notes
-
-* Ensure your Groq API key is secure
-* Add rate limiting for production
-* Improve error handling for API failures
-
----
-
-## 📸 Preview
-
-ChatGPT-style interface with:
-
-* Sidebar (optional)
-* Chat thread
-* Input box
-* Streaming responses
-
----
-
-## 🙌 Future Improvements
-
-* Authentication
-* Chat history persistence (DB)
-* Multi-model switching
-* Voice input/output
-* File uploads
-
----
-
-## ⭐ Contributing
-
-Feel free to fork and improve this project!
-
----
-
-## 📄 License
-
-MIT License
+- `node_modules/` and `.env.local` are intentionally excluded from version control (see `.gitignore`). Use `.env.example` as a reference for required environment variables.
+- The model used in `app/api/chat/route.ts` can be swapped for any [Groq-supported model](https://console.groq.com/docs/models) or another AI SDK provider (e.g. `@ai-sdk/openai`, `@ai-sdk/google`) by updating the import and `model:` field.
